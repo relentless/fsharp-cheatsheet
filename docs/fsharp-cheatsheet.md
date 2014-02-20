@@ -146,15 +146,3 @@ The first and second elements of a tuple can be obtained using `fst`, `snd`, or 
 	let print' tuple =
 	    match tuple with
 	    | (a, b) -> printfn "Pair %A %A" a b
-
-*Records* represent simple aggregates of named values, optionally with members:
-
-    // Declare a record type
-    type Person = { Name : string; Age : int }
-
-    // Create a value via record expression
-    let paul = { Name = "Paul"; Age = 28 }
-
-    // 'Copy and update' record expression
-	let paulsTwin = { paul with Name = "Jim" }
-
