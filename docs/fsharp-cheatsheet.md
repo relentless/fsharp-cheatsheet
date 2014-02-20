@@ -7,12 +7,18 @@ use 'let' to assign values.  Most types are inferred, so don't need explicitly d
     let myInt = 5
     let myFloat = 3.0
 
-### type conversion
+### Type Conversion
 There are functions which can be used to convert between common types:
 
     let i = 42
     let f = float i
     let i2 = int f
+
+### Immutability
+Remember!  Once you've set a value, you can't change it.  (OK, you can, but I won't tell you how..)
+
+    let x = 3
+    let x <- 5 // No can do!
 
 Functions
 ---------
@@ -88,9 +94,8 @@ The first and second elements of a tuple can be obtained using `fst`, `snd`, or 
 	    match tuple with
 	    | (a, b) -> printfn "Pair %A %A" a b
 
-Collections
------------
-### Lists
+Lists
+-----
 A *list* is an immutable collection of elements of the same type.
 
     // Lists use square brackets and `;` delimiter
@@ -100,30 +105,22 @@ A *list* is an immutable collection of elements of the same type.
     // @ is concatenating two lists    
     let list3 = list1 @ list2   
 
-### Arrays
-*Arrays* are fixed-size, zero-based, mutable collections of consecutive data elements.
-
-	// Arrays use square brackets with bar
-    let array1 = [| "a"; "b" |]
-    // Indexed access using dot
-    let first = array1.[0]  
-
 ### Higher-order functions on collections
-The same list `[ 1; 3; 5; 7; 9 ]` or array `[| 1; 3; 5; 7; 9 |]` can be generated in various ways.
+The same list `[ 1; 3; 5; 7; 9 ]` can be generated in various ways.
 
  - Using range operator `..`
     
         let xs = [ 1..2..9 ]
 
- - Using list or array comprehensions
+ - Using list comprehensions
     
-        let ys = [| for i in 0..4 -> 2 * i + 1 |]
+        let ys = [ for i in 0..4 -> 2 * i + 1 ]
 
-Lists and arrays have comprehensive sets of higher-order functions for manipulation.
+Lists have comprehensive sets of higher-order functions for manipulation.
 
   - `map` transforms every element of the list (or array)
 
-		let ys' = Array.map (fun x -> x * x) [| 0..9 |]
+		let ys' = List.map (fun x -> x * x) [| 0..9 |]
 
   - `iter`ate through a list and produce side effects
  		
