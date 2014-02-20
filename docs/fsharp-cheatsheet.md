@@ -1,12 +1,5 @@
 This cheatsheet glances over some of the common syntax of F# 3.0
 
-Comments
---------
-
-	(* This is block comment *)
-
-    // And this is line comment
-
 Basic Types and Literals
 ------------------------
 use 'let' to assign values.  Most types are inferred, so don't need explicitly defining:
@@ -15,7 +8,6 @@ use 'let' to assign values.  Most types are inferred, so don't need explicitly d
     let myFloat = 3.0
 
 ### type conversion
-
 There are functions which can be used to convert between common types:
 
     let i = 42
@@ -51,16 +43,6 @@ The `rec` keyword is used together with the `let` keyword to define a recursive 
 	    if x < 1 then 1
 	    else x * factorial (x - 1)
 
-*Mutually recursive* functions (those functions which call each other) are indicated by `and` keyword:
-
-	let rec even x =
-	   if x = 0 then true 
-	   else odd (x - 1)
-
-	and odd x =
-	   if x = 1 then true 
-	   else even (x - 1)
-
 Order of Evaluation
 -------------------
 Things are evaluated strictly left-to-right
@@ -83,6 +65,28 @@ Pattern matching is often facilitated through `match` keyword.
 	    | "Jim" -> "Hey Jimmy!"
 	    | "Ted" -> "Oh, it's you.."
 	    | x -> "Hello " + x
+
+Tuples
+------
+A *tuple* is a grouping of unnamed but ordered values, possibly of different types:
+
+    // Tuple construction
+    let myTuple = (1, "Hello")
+
+    // Triple
+	let y = ("one", "two", "three") 
+
+    // Tuple deconstruction / pattern
+    let (a, b) = myTuple
+
+The first and second elements of a tuple can be obtained using `fst`, `snd`, or pattern matching:
+
+	let c' = fst (1, 2)
+	let d' = snd (1, 2)
+	
+	let print' tuple =
+	    match tuple with
+	    | (a, b) -> printfn "Pair %A %A" a b
 
 Collections
 -----------
@@ -125,24 +129,3 @@ Lists and arrays have comprehensive sets of higher-order functions for manipulat
  		
 		List.iter (fun x -> printfn "%i" x) [ 0..9 ] 
 
-Tuples and Records
-------------------
-A *tuple* is a grouping of unnamed but ordered values, possibly of different types:
-
-    // Tuple construction
-    let myTuple = (1, "Hello")
-
-    // Triple
-	let y = ("one", "two", "three") 
-
-    // Tuple deconstruction / pattern
-    let (a, b) = myTuple
-
-The first and second elements of a tuple can be obtained using `fst`, `snd`, or pattern matching:
-
-	let c' = fst (1, 2)
-	let d' = snd (1, 2)
-	
-	let print' tuple =
-	    match tuple with
-	    | (a, b) -> printfn "Pair %A %A" a b
