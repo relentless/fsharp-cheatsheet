@@ -84,13 +84,8 @@ Pattern matching is often facilitated through `match` keyword.
 	    | "Ted" -> "Oh, it's you.."
 	    | x -> "Hello " + x
 
-Pattern matching can be done directly on arguments:
-
-	let fst' (x, _) = x
-
 Collections
 -----------
-
 ### Lists
 A *list* is an immutable collection of elements of the same type.
 
@@ -109,7 +104,6 @@ A *list* is an immutable collection of elements of the same type.
     // Indexed access using dot
     let first = array1.[0]  
 
-
 ### Higher-order functions on collections
 The same list `[ 1; 3; 5; 7; 9 ]` or array `[| 1; 3; 5; 7; 9 |]` can be generated in various ways.
 
@@ -120,7 +114,6 @@ The same list `[ 1; 3; 5; 7; 9 ]` or array `[| 1; 3; 5; 7; 9 |]` can be generate
  - Using list or array comprehensions
     
         let ys = [| for i in 0..4 -> 2 * i + 1 |]
-
 
 Lists and arrays have comprehensive sets of higher-order functions for manipulation.
 
