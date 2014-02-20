@@ -1,5 +1,4 @@
-This cheatsheet glances over some of the common syntax of [F# 3.0](http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html).
-If you have any comments, corrections, or suggested additions, please open an issue or send a pull request to [https://github.com/dungpa/fsharp-cheatsheet](https://github.com/dungpa/fsharp-cheatsheet).
+This cheatsheet glances over some of the common syntax of F# 3.0
 
 Comments
 --------
@@ -8,34 +7,6 @@ Block comments are placed between `(*` and `*)`. Line comments start from `//` a
 	(* This is block comment *)
 
     // And this is line comment
-    
-XML doc comments come after `///` allowing us to use XML tags to generate documentation.    
-    
-    /// The `let` keyword defines an (immutable) value
-    let result = 1 + 1 = 2
-
-Strings
--------
-F# `string` type is an alias for `System.String` type.
-
-    /// Create a string using string concatenation
-    let hello = "Hello" + " World"
-
-Use *verbatim strings* preceded by `@` symbol to avoid escaping control characters (except escaping `"` by `""`).
-
-    let verbatimXml = @"<book title=""Paradise Lost"">"
-
-We don't even have to escape `"` with *triple-quoted strings*.
-
-    let tripleXml = """<book title="Paradise Lost">"""
-
-*Backslash strings* indent string contents by stripping leading spaces.
-
-    let poem = 
-        "The lesser world was daubed\n\
-         By a colorist of modest skill\n\
-         A master limned you in the finest inks\n\
-         And with a fresh-cut quill."
 
 Basic Types and Literals
 ------------------------
@@ -55,8 +26,6 @@ Other common examples are `F` or `f` for 32-bit floating-point numbers, `M` or `
 	// val f : float = 4.14
 	// val d : decimal = 0.7833M
 	// val bi : System.Numerics.BigInteger = 9999
-
-See [Literals (MSDN)](http://msdn.microsoft.com/en-us/library/dd233193.aspx) for complete reference.
 
 Functions
 ---------
@@ -108,33 +77,15 @@ Pattern Matching
 ----------------
 Pattern matching is often facilitated through `match` keyword.
 
-	let rec fib n =
-	    match n with
-	    | 0 -> 0
-	    | 1 -> 1
-	    | _ -> fib (n - 1) + fib (n - 2)
-
-In order to match sophisticated inputs, one can use `when` to create filters or guards on patterns:
-
-	let sign x = 
-		match x with
-	    | 0 -> 0
-	    | x when x < 0 -> -1
-	    | x -> 1
+	let sayHi name =
+	    match name with
+	    | "Jim" -> "Hey Jummy!"
+	    | "Ted" -> "Oh, it's you.."
+	    | x -> "Hello " + x
 
 Pattern matching can be done directly on arguments:
 
 	let fst' (x, _) = x
-
-or implicitly via `function` keyword:
-
-    /// Similar to `fib`; using `function` for pattern matching
-	let rec fib' = function
-	    | 0 -> 0
-	    | 1 -> 1
-	    | n -> fib' (n - 1) + fib' (n - 2)
-
-For more complete reference visit [Pattern Matching (MSDN)](http://msdn.microsoft.com/en-us/library/dd547125.aspx).
 
 Collections
 -----------
@@ -258,12 +209,6 @@ Records can be augmented with properties and methods:
     type Person with
         member x.Info = (x.Name, x.Age)
 
-Records are essentially sealed classes with extra topping: default immutability, structural equality, and pattern matching support.
-
-    let isPaul person =
-		match person with
-		| { Name = "Paul" } -> true
-		| _ -> false
 
 Discriminated Unions
 --------------------
@@ -277,13 +222,6 @@ Discriminated Unions
 		| Node(l, _, r) -> 1 + depth l + depth r
 		| Leaf -> 0
 
-F# Core has a few built-in discriminated unions for error handling, e.g., [Option](http://msdn.microsoft.com/en-us/library/dd233245.aspx) and [Choice](http://msdn.microsoft.com/en-us/library/ee353439.aspx).
-
-	let optionPatternMatch input =
-	   match input with
-	    | Some i -> printfn "input is an int=%d" i
-	    | None -> printfn "input is missing"
-
 Single-case discriminated unions are often used to create type-safe abstractions with pattern matching support:
 
     type OrderId = Order of string
@@ -296,12 +234,6 @@ Single-case discriminated unions are often used to create type-safe abstractions
 
 Exceptions
 ----------
-The `failwith` function throws an exception of type `Exception`.
-
-	let divideFailwith x y =
-		if y = 0 then 
-			failwith "Divisor cannot be zero." 
-	  	else x / y
 
 Exception handling is done via `try/with` expressions.
 
@@ -312,123 +244,12 @@ Exception handling is done via `try/with` expressions.
  	   	   printfn "Division by zero!"
 		   None
 	
-The `try/finally` expression enables you to execute clean-up code even if a block of code throws an exception. Here's an example which also defines custom exceptions.
-
-	exception InnerError of string
-	exception OuterError of string
-	
-	let handleErrors x y =
-	   try 
-	     try 
-	        if x = y then raise (InnerError("inner"))
-	        else raise (OuterError("outer"))
-	     with InnerError(str) -> 
- 			  printfn "Error1 %s" str
-	   finally
-	      printfn "Always print this."
-
-Classes and Inheritance
------------------------
-This example is a basic class with (1) local let bindings, (2) properties, (3) methods, and (4) static members.
-
-	type Vector(x : float, y : float) =
-		let mag = sqrt(x * x + y * y) // (1)
-	    member this.X = x // (2)
-	    member this.Y = y
-	    member this.Mag = mag
-		member this.Scale(s) = // (3)
-	        Vector(x * s, y * s)
-		static member (+) (a : Vector, b : Vector) = // (4)
-	        Vector(a.X + b.X, a.Y + b.Y)
-
-Call a base class from a derived one.
-
-	type Animal() =
-	    member __.Rest() = ()
-	           
-	type Dog() =
-	    inherit Animal()
-	    member __.Run() =
-	        base.Rest()
-
-*Upcasting* is denoted by `:>` operator.
-
-	let dog = Dog() 
-	let animal = dog :> Animal
-
-*Dynamic casting* (`:?>`) might throw an exception if the cast doesn't succeed at runtime.
-
-	let probablyADog = animal :?> Dog
-
-Interfaces and Object Expressions
----------------------------------
-Declare `IVector` interface and implement it in `Vector'`.
-
-	type IVector =
-	    abstract Scale : float -> IVector
-	
-	type Vector'(x, y) =
-	    interface IVector with
-	        member __.Scale(s) =
-	            Vector'(x * s, y * s) :> IVector
-	    member __.X = x
-	    member __.Y = y
-
-Another way of implementing interfaces is to use *object expressions*.
-
-	type ICustomer =
-	    abstract Name : string
-	    abstract Age : int
-	
-	let createCustomer name age =
-	    { new ICustomer with
-	        member __.Name = name
-	        member __.Age = age }
-
-Active Patterns
----------------
-*Complete active patterns*:
-
-	let (|Even|Odd|) i = 
-		if i % 2 = 0 then Even else Odd
-	
-	let testNumber i =
-	    match i with
-	    | Even -> printfn "%d is even" i
-	    | Odd -> printfn "%d is odd" i
-
-*Parameterized active patterns*:
-
-	let (|DivisibleBy|_|) by n = 
-		if n % by = 0 then Some DivisibleBy else None
-	
-	let fizzBuzz = function 
-	    | DivisibleBy 3 & DivisibleBy 5 -> "FizzBuzz" 
-	    | DivisibleBy 3 -> "Fizz" 
-	    | DivisibleBy 5 -> "Buzz" 
-	    | _ -> "" 
-
-*Partial active patterns* share the syntax of parameterized patterns but their active recognizers accept only one argument.
-
 Compiler Directives
 -------------------
 Load another F# source file into FSI.
 
     #load "../lib/StringParsing.fs"
 
-Reference a .NET assembly (`/` symbol is recommended for Mono compatibility).
+Reference a .NET assembly
 
 	#r "../lib/FSharp.Markdown.dll"
-
-Include a directory in assembly search paths.
-
-    #I "../lib"
-    #r "FSharp.Markdown.dll"
-
-Other important directives are conditional execution in FSI (`INTERACTIVE`) and querying current directory (`__SOURCE_DIRECTORY__`).
-
-    #if INTERACTIVE
-    let path = __SOURCE_DIRECTORY__ + "../lib"
-    #else
-    let path = "../../../lib"
-    #endif
