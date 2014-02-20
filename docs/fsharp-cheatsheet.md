@@ -1,5 +1,3 @@
-This cheatsheet glances over some of the common syntax of F# 3.0
-
 Basic Types and Literals
 ------------------------
 use 'let' to assign values.  Most types are inferred, so don't need explicitly defining:
