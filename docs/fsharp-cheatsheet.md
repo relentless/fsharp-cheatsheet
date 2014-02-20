@@ -165,28 +165,3 @@ The first and second elements of a tuple can be obtained using `fst`, `snd`, or 
     // 'Copy and update' record expression
 	let paulsTwin = { paul with Name = "Jim" }
 
-
-Discriminated Unions
---------------------
-*Discriminated unions* (DU) provide support for values that can be one of a number of named cases, each possibly with different values and types.
-
-    type Tree =
-	| Node of Tree * Tree
-	| Leaf of int
-
-    let rec depth = function
-		| Node(l, r) -> 1 + depth l + depth r
-		| Leaf -> 0
-
-Exceptions
-----------
-
-Exception handling is done via `try/with` expressions.
-
-	let divide x y =
-	   try
-	       Some (x / y)
-	   with :? System.DivideByZeroException -> 
- 	   	   printfn "Division by zero!"
-		   None
-
