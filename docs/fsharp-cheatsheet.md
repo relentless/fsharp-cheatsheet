@@ -24,16 +24,15 @@ The `let` keyword also defines named functions.
 
 	let negate x = x * -1 
 	let square x = x * x 
-	let print x = printfn "The number is: %d" x
 
-    let squareNegateThenPrint x = 
-		print (negate (square x)) 
+    let squareThenNegate x = 
+		negate (square x) 
 
 ### Pipe and composition operators
 Pipe operator `|>` is used to chain functions and arguments together:
 
 	let squareNegateThenPrint' x = 
-		x |> square |> negate |> print
+		x |> square |> negate 
 		
 ### Type Annotations
 If you want to be specific about a type (of the F# compiler can't work it out), do it like so:
@@ -83,14 +82,10 @@ A *tuple* is a grouping of unnamed but ordered values, possibly of different typ
     // Tuple deconstruction / pattern
     let (a, b) = myTuple
 
-The first and second elements of a tuple can be obtained using `fst`, `snd`, or pattern matching:
+The first and second elements of a tuple can be obtained using `fst`, `snd`, or pattern matching (as above):
 
 	let c' = fst (1, 2)
 	let d' = snd (1, 2)
-	
-	let print' tuple =
-	    match tuple with
-	    | (a, b) -> printfn "Pair %A %A" a b
 
 Lists
 -----
