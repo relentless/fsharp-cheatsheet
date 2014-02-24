@@ -16,7 +16,7 @@ There are functions which can be used to convert between common types:
 Remember!  Once you've set a value, you can't change it.  (OK, you can, but I won't tell you how..)
 
     let x = 3
-    let x <- 5 // No can do!
+    x <- 5 // No can do!
 
 Functions
 ---------
@@ -98,7 +98,7 @@ A *list* is an immutable collection of elements of the same type.
     // @ is concatenating two lists    
     let list3 = list1 @ list2   
 
-### Higher-order functions on collections
+### Higher-order functions on lists
 The same list `[ 1; 3; 5; 7; 9 ]` can be generated in various ways.
 
  - Using range operator `..`
